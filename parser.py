@@ -4,19 +4,11 @@ from urllib2 import urlopen
 from contextlib import closing
 import json
 
-def findPosition():
-	url = 'http://freegeoip.net/json/'
+def findPosition(lat, lon):
 
-	try:
-		with closing(urlopen(url)) as response:
-			position = json.loads(response.read())
-	except:
-		print("Location could not be determined")
 
 	restStops = []
 
-	currLat = float(position['latitude'])
-	currLong = float(position['longitude'])
 
 	with open('RestAreas.csv', 'rb') as csvfile:
 		reader = csv.reader(csvfile)
@@ -32,8 +24,8 @@ def findPosition():
 		#print stop.location
 		stopLong = float(stop.location[0])
 		stopLat = float(stop.location[1])
-		latDistance = abs(stopLat - currLat)
-		longDistance = abs(stopLong - currLong)
+		latDistance = abs(stopLat - lat)
+		longDistance = abs(stopLong - lon)
 		totalDistance = math.sqrt((latDistance * latDistance) + (longDistance * longDistance))
 		if totalDistance < dist:
 			dist = totalDistance
