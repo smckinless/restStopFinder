@@ -1,4 +1,11 @@
+<html>
 {% block content %}
 <div>
+	{% for step in steps %}
+		<html>
+			{{ step['html_instructions'] }}
+		</html>
+	{% endfor %}
 </div>
 {% endblock %}
+</html>

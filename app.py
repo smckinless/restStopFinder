@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, url_for
 from parser import *
-import os
+import os, urllib2
+from html import HTML
 
 app = Flask(__name__)
+YOUR_API_KEY = "AIzaSyAveMfGooZzTbOq5rVO-OeyyUbVnn6Nc3g"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -14,9 +16,25 @@ def find_stop():
     print request.json
     lat = float(request.json['lat'])
     lon = float(request.json['lon'])
-    
+    #print lat
+    #geocodedLocation = json.load(urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(lat)+","+str(lon)+"&key="+YOUR_API_KEY))
+    #address = geocodedLocation['results'][0]['formatted_address']
     stop = findPosition(lat, lon)
-    return stop.name
+    #stopLocation = json.load(urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(stop.location[1])+","+str(stop.location[0])+"&key="+YOUR_API_KEY))
+    #stopAddress = stopLocation['results'][0]['formatted_address']
+    directions = json.load(urllib2.urlopen("https://maps.googleapis.com/maps/api/directions/json?origin="+str(lat)+","+str(lon)+"&destination="+str(stop.location[1])+","+str(stop.location[0])+"&key="))
+    #for direction in directions:
+    steps = directions['routes'][0]['legs'][0]['steps']
+    total_distance = directions['routes'][0]['legs'][0]['distance']['text']
+    instructions = stop.name + "<br><br>You are " + total_distance + " from your destination.<br><br>"
+    for step in steps:
+        instructions += step['html_instructions'] + " for " + step['distance']['text'] + "." + "<br>"
+
+    return instructions
+    #render_template("result.html", steps=steps)
+    #print stopAddress
+    #return render_template("result.html", text=text)
+    #return stop.name
 
 if __name__ == '__main__':
 	port = int(os.environ.get("PORT", 5000))
