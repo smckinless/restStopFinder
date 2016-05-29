@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from parser import *
 import os, urllib2
-from html import HTML
 
 app = Flask(__name__)
 YOUR_API_KEY = "AIzaSyAveMfGooZzTbOq5rVO-OeyyUbVnn6Nc3g"
