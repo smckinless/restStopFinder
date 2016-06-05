@@ -3,9 +3,26 @@ body {
 	font-family: 'Signika', sans-serif;
 }
 
+@media (max-width: 500px) {
+	#link {
+		width: 35%;
+	}
+	.title h1 {
+		font-size: 50px;
+	}
+}
+
+@media (min-width: 550px) {
+	#link {
+		width: 15%;
+	}
+	.title h1 {
+		font-size: 75px;
+	}
+}
+
 #link {
 	margin-top: 5%;
-	width: 15%;
 	background-color: #76A6A4;
 	padding: 25px;
 	border-radius: 15px;
@@ -31,7 +48,6 @@ a {
 }
 
 .title h1 {
-	font-size: 75px;
 	color: white;
 }
 
