@@ -3,7 +3,7 @@ from parser import *
 import os, urllib2
 
 app = Flask(__name__)
-YOUR_API_KEY = ""
+YOUR_API_KEY = "AIzaSyAveMfGooZzTbOq5rVO-OeyyUbVnn6Nc3g"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -44,4 +44,4 @@ def find_stop():
 
 if __name__ == '__main__':
 	port = int(os.environ.get("PORT", 5000))
-	app.run(debug=True, host='0.0.0.0', port=port)
+	app.run(debug=False, host='0.0.0.0', port=port)
