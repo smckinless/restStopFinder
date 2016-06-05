@@ -3,7 +3,7 @@ from parser import *
 import os, urllib2
 
 app = Flask(__name__)
-YOUR_API_KEY = "AIzaSyAveMfGooZzTbOq5rVO-OeyyUbVnn6Nc3g"
+YOUR_API_KEY = ""
 
 @app.route("/", methods=["GET", "POST"])
 def index():
