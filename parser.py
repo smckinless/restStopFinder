@@ -19,7 +19,7 @@ def findPosition(lat, lon, northBound, eastBound):
 			restStops.append(RestStop(row[2], location))
 
 	dist = 1000
-	correctStop = location[0]
+	correctStop = False
 	for stop in restStops:
 		#print stop.location
 		stopLong = float(stop.location[0])
@@ -41,6 +41,20 @@ def findPosition(lat, lon, northBound, eastBound):
 				correctStop = stop
 		else:
 			if totalDistance < dist and stopLat < lat and stopLong < lon:
+				dist = totalDistance
+				correctStop = stop
+
+	dist = 1000
+
+	if correctStop is False:
+		for stop in restStops:
+		#print stop.location
+			stopLong = float(stop.location[0])
+			stopLat = float(stop.location[1])
+			latDistance = abs(stopLat - lat)
+			longDistance = abs(stopLong - lon)
+			totalDistance = math.sqrt((latDistance * latDistance) + (longDistance * longDistance))
+			if totalDistance < dist:
 				dist = totalDistance
 				correctStop = stop
 

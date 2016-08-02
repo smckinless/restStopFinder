@@ -16,7 +16,7 @@ def finder():
 
 @app.route('/result', methods=["GET", "POST"])
 def find_stop():
-    print request.json
+    # print request.json
     beginLat = float(request.json['beginLat'])
     beginLon = float(request.json['beginLon'])
     endLat = float(request.json['endLat'])
@@ -31,7 +31,8 @@ def find_stop():
         eastBound = True
     stop = findPosition(endLat, endLon, northBound, eastBound)
     
-    
+    if stop is False:
+        stop = findPosition(endLat, endLon, northBound, eastBound)
     directions = json.load(urllib2.urlopen("https://maps.googleapis.com/maps/api/directions/json?origin="+str(endLat)+","+str(endLon)+"&destination="+str(stop.location[1])+","+str(stop.location[0])+"&key="))
     steps = directions['routes'][0]['legs'][0]['steps']
     total_distance = directions['routes'][0]['legs'][0]['distance']['text']

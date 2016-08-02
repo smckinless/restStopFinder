@@ -31,7 +31,7 @@ function stateChange(newState) {
         if (newState == -1) {
           secondCall();
         }
-      }, 5000);
+      }, 10000);
       
 };
 
@@ -44,7 +44,6 @@ function findPosition() {
 window.onload = findPosition();
 
 function firstCall() {
-  console.log("ih");
   var startPos;
   var geoOptions = {
      timeout: 10 * 1000
@@ -52,8 +51,8 @@ function firstCall() {
 
   var geoSuccess = function(position) {
     startPos = position;
-    alert(startPos.coords.latitude);
-    alert(startPos.coords.longitude);
+    // alert(startPos.coords.latitude);
+    // alert(startPos.coords.longitude);
     //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
     //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
     data['beginLat'] = startPos.coords.latitude;
@@ -99,8 +98,8 @@ function secondCall() {
 
     var geoSecond = function(position) {
       endPos = position;
-      alert(endPos.coords.latitude);
-      alert(endPos.coords.longitude);
+      // alert(endPos.coords.latitude);
+      // alert(endPos.coords.longitude);
       data['endLat'] = endPos.coords.latitude;
       data['endLon'] = endPos.coords.longitude;
 
