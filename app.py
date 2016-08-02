@@ -25,9 +25,9 @@ def find_stop():
     eastBound = False
     
 
-    if (endLat - beginLat > 0):
+    if (endLat > beginLat):
         northBound = True
-    if (endLon - beginLon > 0):
+    if (endLon < beginLon):
         eastBound = True
     stop = findPosition(endLat, endLon, northBound, eastBound)
     
