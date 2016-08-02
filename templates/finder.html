@@ -17,12 +17,12 @@
 
 <script>
 		// check for Geolocation support
-if (navigator.geolocation) {
-  console.log('Geolocation is supported!');
-}
-else {
-  console.log('Geolocation is not supported for this Browser/OS version yet.');
-}
+// if (navigator.geolocation) {
+//   console.log('Geolocation is supported!');
+// }
+// else {
+//   console.log('Geolocation is not supported for this Browser/OS version yet.');
+// }
 
 data = {};
 
@@ -38,28 +38,41 @@ window.onload = function() {
     console.log(startPos.coords.latitude);
     //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
     //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
-    endPos = position;
-    console.log(endPos.coords.latitude);
-    
-
-    data['beginLat'] = startPos.coords.latitude;
-    data['beginLon'] = startPos.coords.longitude;
-    data['endLat'] = endPos.coords.latitude;
-    data['endLon'] = endPos.coords.longitude;
-
-    var result;
-    $.ajax({
-          type : "POST",
-          url : "{{ url_for('find_stop') }}",
-          data: JSON.stringify(data, null, '\t'),
-          contentType: 'application/json;charset=UTF-8',
-          success: function(result) {
-              //console.log(result);
-              document.getElementById("result").innerHTML = result;
-
-          }
+    function stateChange(newState) {
+      setTimeout(function () {
+        if (newState == -1) {
+          endPos = position;
+          console.log(endPos.coords.latitude);
           
-      });
+
+          data['beginLat'] = startPos.coords.latitude;
+          data['beginLon'] = startPos.coords.longitude;
+          data['endLat'] = endPos.coords.latitude;
+          data['endLon'] = endPos.coords.longitude;
+
+          alert(beginLat);
+          alert(endLat);
+          alert(beginLon);
+          alert(beginLat);
+
+          var result;
+          $.ajax({
+                type : "POST",
+                url : "{{ url_for('find_stop') }}",
+                data: JSON.stringify(data, null, '\t'),
+                contentType: 'application/json;charset=UTF-8',
+                success: function(result) {
+                    //console.log(result);
+                    document.getElementById("result").innerHTML = result;
+
+                }
+                
+            });
+        }
+      }, 5000);
+    }
+    stateChange(-1);
+    
 
 
   };
