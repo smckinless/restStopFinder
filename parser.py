@@ -27,21 +27,20 @@ def findPosition(lat, lon, northBound, eastBound):
 		latDistance = abs(stopLat - lat)
 		longDistance = abs(stopLong - lon)
 		totalDistance = math.sqrt((latDistance * latDistance) + (longDistance * longDistance))
-		if northBound is True:
-			if totalDistance < dist and stopLat > lat:
+		if northBound is True and eastBound is True:
+			if totalDistance < dist and stopLat > lat and stopLong > lon:
+				dist = totalDistance
+				correctStop = stop
+		elif northBound is False and eastBound is True:
+			if totalDistance < dist and stopLat < lat and stopLong > lon:
+				dist = totalDistance
+				correctStop = stop
+		elif northBound is True and eastBound is False:
+			if totalDistance < dist and stopLat > lat and stopLong < lon:
 				dist = totalDistance
 				correctStop = stop
 		else:
-			if totalDistance < dist and stopLat < lat:
-				dist = totalDistance
-				correctStop = stop
-				
-		if eastBound is True:
-			if totalDistance < dist and stopLon < lat:
-				dist = totalDistance
-				correctStop = stop
-		else:
-			if totalDistance < dist and stopLat > lat:
+			if totalDistance < dist and stopLat < lat and stopLong < lon:
 				dist = totalDistance
 				correctStop = stop
 
