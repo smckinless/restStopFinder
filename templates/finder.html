@@ -38,6 +38,26 @@ window.onload = function() {
     console.log(startPos.coords.latitude);
     //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
     //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+    data['beginLat'] = startPos.coords.latitude;
+    data['beginLon'] = startPos.coords.longitude;
+    
+    
+
+
+  };
+
+  var geoError = function(error) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+
+  var geoSecond = function(position) {
+    endPos = position;
+
     function stateChange(newState) {
       setTimeout(function () {
         if (newState == -1) {
@@ -45,8 +65,7 @@ window.onload = function() {
           console.log(endPos.coords.latitude);
           
 
-          data['beginLat'] = startPos.coords.latitude;
-          data['beginLon'] = startPos.coords.longitude;
+          
           data['endLat'] = endPos.coords.latitude;
           data['endLon'] = endPos.coords.longitude;
 
@@ -73,21 +92,12 @@ window.onload = function() {
       }, 5000);
     }
     stateChange(-1);
-    
-
-
-  };
-
-  var geoError = function(error) {
-    console.log('Error occurred. Error code: ' + error.code);
-    // error.code can be:
-    //   0: unknown error
-    //   1: permission denied
-    //   2: position unavailable (error response from location provider)
-    //   3: timed out
   };
 
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+  navigator.geolocation.getCurrentPosition(geoSecond, geoError, geoOptions);
+
+
   return data;
   //$(function() {
     //$('a#calculate').bind('click', function() {
