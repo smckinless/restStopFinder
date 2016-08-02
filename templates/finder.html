@@ -26,16 +26,34 @@
 
 data = {};
 
-window.onload = function() {
+function stateChange(newState) {      
+      setTimeout(function () {
+        if (newState == -1) {
+          secondCall();
+        }
+      }, 5000);
+      
+};
+
+function findPosition() {
+  firstCall();
+  stateChange(-1);
+}
+
+
+window.onload = findPosition();
+
+function firstCall() {
+  console.log("ih");
   var startPos;
-  var endPos;
   var geoOptions = {
      timeout: 10 * 1000
   }
 
   var geoSuccess = function(position) {
     startPos = position;
-    console.log(startPos.coords.latitude);
+    alert(startPos.coords.latitude);
+    alert(startPos.coords.longitude);
     //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
     //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
     data['beginLat'] = startPos.coords.latitude;
@@ -55,50 +73,9 @@ window.onload = function() {
     //   3: timed out
   };
 
-  var geoSecond = function(position) {
-    endPos = position;
-
-    function stateChange(newState) {
-      setTimeout(function () {
-        if (newState == -1) {
-          endPos = position;
-          console.log(endPos.coords.latitude);
-          
-
-          
-          data['endLat'] = endPos.coords.latitude;
-          data['endLon'] = endPos.coords.longitude;
-
-
-          alert(data['beginLat']);
-          alert(data['endLat']);
-          alert(data['beginLon']);
-          alert(data['endLon']);
-
-          var result;
-          $.ajax({
-                type : "POST",
-                url : "{{ url_for('find_stop') }}",
-                data: JSON.stringify(data, null, '\t'),
-                contentType: 'application/json;charset=UTF-8',
-                success: function(result) {
-                    //console.log(result);
-                    document.getElementById("result").innerHTML = result;
-
-                }
-                
-            });
-        }
-      }, 5000);
-    }
-    stateChange(-1);
-  };
-
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
-  navigator.geolocation.getCurrentPosition(geoSecond, geoError, geoOptions);
 
 
-  return data;
   //$(function() {
     //$('a#calculate').bind('click', function() {
     //$.getJSON('/_result', {
@@ -113,6 +90,53 @@ window.onload = function() {
 
   //return false;
 };
+
+function secondCall() {
+    var geoOptions = {
+       timeout: 10 * 1000
+    }
+    var endPos;
+
+    var geoSecond = function(position) {
+      endPos = position;
+      alert(endPos.coords.latitude);
+      alert(endPos.coords.longitude);
+      data['endLat'] = endPos.coords.latitude;
+      data['endLon'] = endPos.coords.longitude;
+
+      var result;
+      $.ajax({
+        type : "POST",
+        url : "{{ url_for('find_stop') }}",
+        data: JSON.stringify(data, null, '\t'),
+        contentType: 'application/json;charset=UTF-8',
+        success: function(result) {
+            //console.log(result);
+            document.getElementById("result").innerHTML = result;
+
+        }
+        
+      });
+      return data;
+
+    
+
+    };
+
+    var geoError = function(error) {
+      console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+    };
+    
+    navigator.geolocation.getCurrentPosition(geoSecond, geoError, geoOptions);
+
+};
+
+
 </script>
 
 
