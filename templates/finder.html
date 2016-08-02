@@ -50,10 +50,11 @@ window.onload = function() {
           data['endLat'] = endPos.coords.latitude;
           data['endLon'] = endPos.coords.longitude;
 
-          alert(beginLat);
-          alert(endLat);
-          alert(beginLon);
-          alert(beginLat);
+          
+          alert(data['beginLat']);
+          alert(data['endLat']);
+          alert(data['beginLon']);
+          alert(data['beginLat']);
 
           var result;
           $.ajax({
