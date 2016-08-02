@@ -19,8 +19,8 @@ def find_stop():
     print request.json
     beginLat = float(request.json['beginLat'])
     beginLon = float(request.json['beginLon'])
-    endLat = float(request.json['beginLat'])
-    endLon = float(request.json['beginLon'])
+    endLat = float(request.json['endLat'])
+    endLon = float(request.json['endLon'])
     northBound = False
     eastBound = False
     
