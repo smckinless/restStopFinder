@@ -28,6 +28,7 @@ data = {};
 
 window.onload = function() {
   var startPos;
+  var endPos;
   var geoOptions = {
      timeout: 10 * 1000
   }
@@ -37,10 +38,15 @@ window.onload = function() {
     console.log(startPos.coords.latitude);
     //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
     //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
-
+    endPos = position;
+    console.log(endPos.coords.latitude);
     
-    data['lat'] = startPos.coords.latitude;
-    data['lon'] = startPos.coords.longitude;
+
+    data['beginLat'] = startPos.coords.latitude;
+    data['beginLon'] = startPos.coords.longitude;
+    data['endLat'] = endPos.coords.latitude;
+    data['endLon'] = endPos.coords.longitude;
+
     var result;
     $.ajax({
           type : "POST",

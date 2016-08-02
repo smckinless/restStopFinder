@@ -4,7 +4,7 @@ from urllib2 import urlopen
 from contextlib import closing
 import json
 
-def findPosition(lat, lon):
+def findPosition(lat, lon, northBound, eastBound):
 
 
 	restStops = []
@@ -27,8 +27,22 @@ def findPosition(lat, lon):
 		latDistance = abs(stopLat - lat)
 		longDistance = abs(stopLong - lon)
 		totalDistance = math.sqrt((latDistance * latDistance) + (longDistance * longDistance))
-		if totalDistance < dist:
-			dist = totalDistance
-			correctStop = stop
+		if northBound is True:
+			if totalDistance < dist and stopLat > lat:
+				dist = totalDistance
+				correctStop = stop
+		else:
+			if totalDistance < dist and stopLat < lat:
+				dist = totalDistance
+				correctStop = stop
+				
+		if eastBound is True:
+			if totalDistance < dist and stopLon < lat:
+				dist = totalDistance
+				correctStop = stop
+		else:
+			if totalDistance < dist and stopLat > lat:
+				dist = totalDistance
+				correctStop = stop
 
 	return correctStop
