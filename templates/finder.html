@@ -16,16 +16,11 @@
 </section>
 
 <script>
-		// check for Geolocation support
-// if (navigator.geolocation) {
-//   console.log('Geolocation is supported!');
-// }
-// else {
-//   console.log('Geolocation is not supported for this Browser/OS version yet.');
-// }
+
 
 data = {};
 
+// waits 10 seconds before secondCall() is called
 function stateChange(newState) {      
       setTimeout(function () {
         if (newState == -1) {
@@ -35,26 +30,26 @@ function stateChange(newState) {
       
 };
 
+// finds two GPS positions of the vehicle
 function findPosition() {
   firstCall();
   stateChange(-1);
 }
 
-
+// calls findPosition() when window loads
 window.onload = findPosition();
 
+// first call to find GPS position of vehicle
 function firstCall() {
   var startPos;
   var geoOptions = {
      timeout: 10 * 1000
   }
 
-  var geoSuccess = function(position) {
+  // finds the latitude and longitude of the vehicle based on position
+  var geoFirst = function(position) {
     startPos = position;
-    // alert(startPos.coords.latitude);
-    // alert(startPos.coords.longitude);
-    //document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-    //document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+
     data['beginLat'] = startPos.coords.latitude;
     data['beginLon'] = startPos.coords.longitude;
     
@@ -62,7 +57,8 @@ function firstCall() {
 
 
   };
-
+  
+  // error handler
   var geoError = function(error) {
     console.log('Error occurred. Error code: ' + error.code);
     // error.code can be:
@@ -72,45 +68,36 @@ function firstCall() {
     //   3: timed out
   };
 
-  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+  
+  navigator.geolocation.getCurrentPosition(geoFirst, geoError, geoOptions);
 
 
-  //$(function() {
-    //$('a#calculate').bind('click', function() {
-    //$.getJSON('/_result', {
-      //  lat: startPos.coords.latitude,
-        //lon: startPos.coords.longitude
-      //}/*, function(data) {
-        //$("#result").text(data.result);
-      //});*/
-      //return false;
-    //});
 
-
-  //return false;
 };
 
+// finds the second GPS position of the vehicle
 function secondCall() {
     var geoOptions = {
        timeout: 10 * 1000
     }
     var endPos;
 
+    // finds the latitude and longitude of the vehicle a second time
     var geoSecond = function(position) {
       endPos = position;
-      // alert(endPos.coords.latitude);
-      // alert(endPos.coords.longitude);
+
       data['endLat'] = endPos.coords.latitude;
       data['endLon'] = endPos.coords.longitude;
 
       var result;
+
+      // send data to server
       $.ajax({
         type : "POST",
         url : "{{ url_for('find_stop') }}",
         data: JSON.stringify(data, null, '\t'),
         contentType: 'application/json;charset=UTF-8',
         success: function(result) {
-            //console.log(result);
             document.getElementById("result").innerHTML = result;
 
         }
@@ -122,6 +109,7 @@ function secondCall() {
 
     };
 
+    // error handler
     var geoError = function(error) {
       console.log('Error occurred. Error code: ' + error.code);
     // error.code can be:
