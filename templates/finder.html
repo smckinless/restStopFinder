@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 {% block body %}
-<section class='title'>
+<section class="title">
 
   <div id="result">
-  <div>
-    <h1>Rest Stop Finder</h1>
-  </div>
-  	<p id="loader">Finding the closest rest stop for you...</p>
+    <div>
+      <h1>Rest Stop Finder</h1>
+    	<p id="loader">Finding the closest rest stop for you...</p>
+    </div>
   </div>	
 </section>
 
@@ -30,6 +30,20 @@ function stateChange(newState) {
       
 };
 
+// error handler
+var geoError = function(error) {
+  console.log('Error occurred. Error code: ' + error.code);
+  // error.code can be:
+  //   0: unknown error
+  //   1: permission denied
+  //   2: position unavailable (error response from location provider)
+  //   3: timed out
+};
+
+var geoOptions = {
+   timeout: 10 * 1000
+}
+
 // finds two GPS positions of the vehicle
 function findPosition() {
   firstCall();
@@ -42,9 +56,6 @@ window.onload = findPosition();
 // first call to find GPS position of vehicle
 function firstCall() {
   var startPos;
-  var geoOptions = {
-     timeout: 10 * 1000
-  }
 
   // finds the latitude and longitude of the vehicle based on position
   var geoFirst = function(position) {
@@ -52,34 +63,13 @@ function firstCall() {
 
     data['beginLat'] = startPos.coords.latitude;
     data['beginLon'] = startPos.coords.longitude;
-    
-    
-
-
   };
-  
-  // error handler
-  var geoError = function(error) {
-    console.log('Error occurred. Error code: ' + error.code);
-    // error.code can be:
-    //   0: unknown error
-    //   1: permission denied
-    //   2: position unavailable (error response from location provider)
-    //   3: timed out
-  };
-
   
   navigator.geolocation.getCurrentPosition(geoFirst, geoError, geoOptions);
-
-
-
 };
 
 // finds the second GPS position of the vehicle
 function secondCall() {
-    var geoOptions = {
-       timeout: 10 * 1000
-    }
     var endPos;
 
     // finds the latitude and longitude of the vehicle a second time
@@ -103,24 +93,11 @@ function secondCall() {
         }
         
       });
+
       return data;
-
-    
-
-    };
-
-    // error handler
-    var geoError = function(error) {
-      console.log('Error occurred. Error code: ' + error.code);
-    // error.code can be:
-    //   0: unknown error
-    //   1: permission denied
-    //   2: position unavailable (error response from location provider)
-    //   3: timed out
     };
     
     navigator.geolocation.getCurrentPosition(geoSecond, geoError, geoOptions);
-
 };
 
 

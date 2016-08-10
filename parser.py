@@ -19,6 +19,7 @@ def findPosition(lat, lon, northBound, eastBound):
 
 	dist = 1000
 	correctStop = False
+	foundStop = location[0]
 
 
 	for stop in restStops:
@@ -73,4 +74,4 @@ def findPosition(lat, lon, northBound, eastBound):
 				dist = totalDistance
 				correctStop = stop
 
-	return correctStop
+	return foundStop
